@@ -1,1 +1,1 @@
-{"name": "cv & gradboosting", "metric": "quantile_quality_x100", "folds": [72.82, 74.93, 74.79, 74.75], "cv": 74.32, "std": 0.87}
+{"name": "cv & lightgbm", "metric": "quantile_quality_x100", "folds": [72.94, 75.04, 74.95, 74.86], "cv": 74.45, "std": 0.87}
