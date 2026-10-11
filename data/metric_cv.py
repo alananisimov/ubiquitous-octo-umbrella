@@ -31,14 +31,21 @@ def quantile_quality(y_true, p10, p50, p90, city) -> float:
         losses.append(pinball(y, prediction, quantile))
         by_city = pd.Series(y).groupby(city).quantile(quantile)
         references.append(pinball(y, city.map(by_city).to_numpy(dtype=float), quantile))
-    return float(np.clip(1.0 - np.mean(losses) / (np.mean(references) + 1e-12), 0.0, 1.0))
+    return float(
+        np.clip(1.0 - np.mean(losses) / (np.mean(references) + 1e-12), 0.0, 1.0)
+    )
 
 
 def cv_json(name: str, fold_qualities, path: str = "cv.json") -> dict:
     """Записать и вернуть cv.json: folds и cv — в баллах 100·P."""
     folds = [round(100.0 * float(q), 2) for q in fold_qualities]
-    cv = {"name": name, "metric": "quantile_quality_x100", "folds": folds,
-          "cv": round(float(np.mean(folds)), 2), "std": round(float(np.std(folds)), 2)}
+    cv = {
+        "name": name,
+        "metric": "quantile_quality_x100",
+        "folds": folds,
+        "cv": round(float(np.mean(folds)), 2),
+        "std": round(float(np.std(folds)), 2),
+    }
     with open(path, "w", encoding="utf-8") as f:
         json.dump(cv, f, ensure_ascii=False)
     return cv
